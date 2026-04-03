@@ -200,10 +200,24 @@
             stroke: var(--pink);
         }
 
+        /* ── MID SECTION (about + photo side by side) ── */
+        .mid-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            max-width: 860px;
+            margin: 0 auto 48px;
+            align-items: center;
+        }
+
+        @media (max-width: 640px) {
+            .mid-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* ── HERO IMAGE ── */
         .hero-img-wrap {
-            max-width: 680px;
-            margin: 0 auto;
             border-radius: 20px;
             overflow: hidden;
             position: relative;
@@ -227,6 +241,57 @@
 
         .hero-img:hover {
             transform: scale(1.02);
+        }
+
+        /* ── EVENTS SECTION ── */
+        .events-section {
+            max-width: 860px;
+            margin: 0 auto 48px;
+            animation: fadeUp 0.9s 0.4s ease both;
+        }
+
+        .events-section h3 {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .events-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .event-tag {
+            padding: 9px 20px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #ddd;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+        }
+
+        .event-tag:hover {
+            border-color: rgba(0,255,150,0.4);
+            color: var(--green);
+            transform: translateY(-2px);
+        }
+
+        .event-tag.highlight {
+            border-color: rgba(180,0,255,0.35);
+            color: #c77dff;
+        }
+
+        .event-tag.highlight:hover {
+            border-color: var(--purple);
+            color: #d9a0ff;
         }
 
         /* ── FOOTER ── */
@@ -304,33 +369,48 @@
 
             <div class="divider"></div>
 
-            <div class="about-card">
-                <strong>Über uns:</strong> Wir sind Timo und David –
-                ein DJ Duo das für gute Vibes sorgt. Wir liefern ab!
+            <!-- Bild + About nebeneinander -->
+            <div class="mid-section">
+                <div class="hero-img-wrap">
+                    <img src="images/dj.jpg" alt="Timo und David beim DJ Setup" class="hero-img">
+                </div>
+
+                <div>
+                    <div class="about-card" style="margin-bottom: 16px;">
+                        <strong>Über uns:</strong> Wir sind Timo und David –
+                        ein DJ Duo das für gute Vibes sorgt. Wir liefern ab!
+                    </div>
+
+                    <div class="socials" style="justify-content: flex-start; margin-bottom: 0;">
+                        <a href="https://www.instagram.com/timorams/" target="_blank" rel="noopener" class="insta-btn">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <circle cx="12" cy="12" r="4"/>
+                                <circle cx="17.5" cy="6.5" r="0.5" fill="#fff" stroke="none"/>
+                            </svg>
+                            @timorams
+                        </a>
+                        <a href="https://www.instagram.com/david_.photography_/" target="_blank" rel="noopener" class="insta-btn">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <circle cx="12" cy="12" r="4"/>
+                                <circle cx="17.5" cy="6.5" r="0.5" fill="#fff" stroke="none"/>
+                            </svg>
+                            @david_.photography_
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <div class="socials">
-                <!-- Instagram-Icon als echtes IG-Outline-Icon -->
-                <a href="https://www.instagram.com/timorams/" target="_blank" rel="noopener" class="insta-btn">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                        <circle cx="12" cy="12" r="4"/>
-                        <circle cx="17.5" cy="6.5" r="0.5" fill="#fff" stroke="none"/>
-                    </svg>
-                    @timorams
-                </a>
-                <a href="https://www.instagram.com/david_.photography_/" target="_blank" rel="noopener" class="insta-btn">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                        <circle cx="12" cy="12" r="4"/>
-                        <circle cx="17.5" cy="6.5" r="0.5" fill="#fff" stroke="none"/>
-                    </svg>
-                    @david_.photography_
-                </a>
-            </div>
-
-            <div class="hero-img-wrap">
-                <img src="images/dj.jpg" alt="Timo und David beim DJ Setup" class="hero-img">
+            <!-- Events -->
+            <div class="events-section">
+                <h3>Wir spielen bei</h3>
+                <div class="events-tags">
+                    <span class="event-tag">🎂 Geburtstage</span>
+                    <span class="event-tag">🎓 Abschlussfeiern</span>
+                    <span class="event-tag">🌤️ Open-Air Events</span>
+                    <span class="event-tag highlight">✉️ Euer Event?</span>
+                </div>
             </div>
         </section>
     </div>
