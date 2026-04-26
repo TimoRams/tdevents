@@ -60,8 +60,6 @@
             background-position: right center;
             pointer-events: none;
             z-index: 0;
-
-            /* Weich ausblenden: rechts + oben + unten komplett transparent */
             -webkit-mask-image:
                 linear-gradient(to right,  rgba(0,0,0,0.13) 0%, rgba(0,0,0,0.08) 40%, transparent 75%),
                 linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
@@ -70,8 +68,6 @@
                 linear-gradient(to right,  rgba(0,0,0,0.13) 0%, rgba(0,0,0,0.08) 40%, transparent 75%),
                 linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
             mask-composite: intersect;
-
-            /* Färbt das Bild leicht in die Akzentfarben */
             mix-blend-mode: screen;
             filter: saturate(2.0) brightness(0.38) hue-rotate(200deg);
         }
@@ -81,7 +77,6 @@
                 left: -5%;
                 width: 110%;
                 background-position: center center;
-                /* Exakt gleiche Maske wie Desktop – nur Position/Größe ändert sich */
                 -webkit-mask-image:
                     linear-gradient(to right,  rgba(0,0,0,0.13) 0%, rgba(0,0,0,0.08) 40%, transparent 75%),
                     linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
@@ -91,6 +86,120 @@
                     linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
                 mask-composite: intersect;
             }
+        }
+
+        /* ── LIVE BANNER ANIMATIONS ── */
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.65); }
+        }
+        @keyframes pulse-ring {
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0; transform: scale(1.8); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(0,255,150,0.3), inset 0 0 30px rgba(0,255,150,0.03); }
+            50% { box-shadow: 0 0 20px rgba(0,255,150,0.55), 0 0 40px rgba(180,0,255,0.15), inset 0 0 30px rgba(0,255,150,0.06); }
+        }
+        @keyframes banner-slide {
+            from { transform: translateY(-100%); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        /* ── LIVE BANNER ── */
+        .live-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, rgba(0,255,150,0.07) 0%, rgba(180,0,255,0.07) 100%);
+            border-bottom: 1px solid rgba(0,255,150,0.18);
+            text-decoration: none;
+            position: relative;
+            z-index: 20;
+            cursor: pointer;
+            animation: banner-slide 0.6s ease both, glow-pulse 2.4s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        .live-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(0,255,150,0.04) 50%, transparent 100%);
+            animation: shimmer 4s linear infinite;
+            background-size: 200% auto;
+            pointer-events: none;
+        }
+
+        .live-dot-wrap {
+            position: relative;
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+        .live-dot {
+            position: absolute;
+            inset: 1px;
+            border-radius: 50%;
+            background: #ff3b3b;
+            animation: pulse-dot 1.3s ease-in-out infinite;
+        }
+        .live-ring {
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: rgba(255,59,59,0.45);
+            animation: pulse-ring 1.3s ease-in-out infinite;
+        }
+
+        .live-badge {
+            background: #ff3b3b;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            padding: 3px 9px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .live-text {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            background: linear-gradient(90deg, #00ff96, #c77dff, #00ff96);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+            white-space: nowrap;
+        }
+
+        .live-tiktok {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            opacity: 0.75;
+        }
+
+        .live-arrow {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 480px) {
+            .live-text { font-size: 11.5px; }
+            .live-banner { gap: 9px; padding: 10px 14px; }
         }
 
         /* ── HEADER ── */
@@ -104,7 +213,6 @@
             animation: fadeDown 0.8s ease both;
         }
 
-        /* LOGO – inline SVG, kein eckiger Kasten */
         .logo-wrapper {
             width: 110px;
             height: 110px;
@@ -246,49 +354,6 @@
             stroke: var(--pink);
         }
 
-        /* ── MID SECTION (about + photo side by side) ── */
-        .mid-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            max-width: 860px;
-            margin: 0 auto 48px;
-            align-items: center;
-        }
-
-        @media (max-width: 640px) {
-            .mid-section {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ── HERO IMAGE ── */
-        .hero-img-wrap {
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .hero-img-wrap::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: 21px;
-            background: linear-gradient(135deg, rgba(0,255,150,0.3), rgba(180,0,255,0.3));
-            z-index: -1;
-        }
-
-        .hero-img {
-            width: 100%;
-            display: block;
-            border-radius: 20px;
-            transition: transform 0.4s ease;
-        }
-
-        .hero-img:hover {
-            transform: scale(1.02);
-        }
-
         /* ── EVENTS SECTION ── */
         .events-section {
             max-width: 860px;
@@ -365,13 +430,8 @@
             gap: 10px;
         }
 
-        /* Feature slots – bigger cells */
-        .gallery-grid .g-wide {
-            grid-column: span 2;
-        }
-        .gallery-grid .g-tall {
-            grid-row: span 2;
-        }
+        .gallery-grid .g-wide { grid-column: span 2; }
+        .gallery-grid .g-tall { grid-row: span 2; }
 
         .gallery-item {
             border-radius: 14px;
@@ -394,7 +454,6 @@
             filter: brightness(1.05);
         }
 
-        /* subtle gradient overlay on hover */
         .gallery-item::after {
             content: '';
             position: absolute;
@@ -405,9 +464,7 @@
             border-radius: 14px;
         }
 
-        .gallery-item:hover::after {
-            opacity: 1;
-        }
+        .gallery-item:hover::after { opacity: 1; }
 
         /* Lightbox */
         .lightbox {
@@ -422,9 +479,7 @@
             cursor: zoom-out;
         }
 
-        .lightbox.active {
-            display: flex;
-        }
+        .lightbox.active { display: flex; }
 
         .lightbox img {
             max-width: 90vw;
@@ -522,8 +577,23 @@
 </head>
 <body>
 
+    <!-- ── JETZT LIVE BANNER ── -->
+    <a href="https://vm.tiktok.com/ZG9NyCrMfDnr7-r2p5e/" target="_blank" rel="noopener" class="live-banner">
+        <div class="live-dot-wrap">
+            <div class="live-ring"></div>
+            <div class="live-dot"></div>
+        </div>
+        <span class="live-badge">Live</span>
+        <span class="live-text">Timo &amp; David sind jetzt live auf TikTok!</span>
+        <span class="live-tiktok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.79a8.18 8.18 0 004.78 1.52V6.84a4.85 4.85 0 01-1.01-.15z" fill="#ffffff"/>
+            </svg>
+        </span>
+        <span class="live-arrow">→</span>
+    </a>
+
     <header>
-        <!-- Logo inline eingebettet – kein eckiger Kasten mehr -->
         <div class="logo-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
                 <defs>
@@ -559,7 +629,7 @@
 
             <!-- Hero Bild -->
             <div class="hero-img-wrap" style="max-width: 680px; margin: 0 auto 32px;">
-                <img src="images/dj.jpg" alt="Timo und David beim DJ Setup" class="hero-img">
+                <img src="images/dj.jpg" alt="Timo und David beim DJ Setup" class="hero-img" style="width:100%;display:block;border-radius:20px;transition:transform 0.4s ease;">
             </div>
 
             <!-- About + Socials -->
@@ -595,7 +665,7 @@
                     <span class="event-tag">🎂 Geburtstage</span>
                     <span class="event-tag">🎓 Abschlussfeiern</span>
                     <span class="event-tag">🌤️ Open-Air Events</span>
-                    <span class="event-tag">✨ & mehr</span>
+                    <span class="event-tag">✨ &amp; mehr</span>
                     <span class="event-tag highlight">✉️ Euer Event?</span>
                 </div>
             </div>
@@ -606,28 +676,24 @@
     <div class="gallery-section container">
         <p class="gallery-label">Impressionen</p>
         <div class="gallery-grid" id="galleryGrid">
-            <!-- Row 1: wide landscape + portrait tall -->
             <div class="gallery-item g-wide" data-index="0">
                 <img src="images/gallery/20220305_183737.jpg" alt="DJ Setup Sonnenuntergang">
             </div>
             <div class="gallery-item g-tall" data-index="1">
                 <img src="images/gallery/20250405_204150.jpg" alt="DJ Controller Nacht">
             </div>
-            <!-- Row 2 (shares tall slot) -->
             <div class="gallery-item" data-index="2">
                 <img src="images/gallery/20230115_030600.jpg" alt="Lichtshow">
             </div>
             <div class="gallery-item" data-index="3">
                 <img src="images/gallery/20230715_171602.jpg" alt="Location Setup">
             </div>
-            <!-- Row 3 -->
             <div class="gallery-item" data-index="4">
                 <img src="images/gallery/20230827_025251.jpg" alt="Birthday Setup">
             </div>
             <div class="gallery-item g-wide" data-index="5">
                 <img src="images/gallery/20241026_182938.jpg" alt="DJ am Sunset">
             </div>
-            <!-- Row 4 -->
             <div class="gallery-item g-tall" data-index="6">
                 <img src="images/gallery/20250509_214206.jpg" alt="Outdoor Event Sunset">
             </div>
@@ -637,7 +703,6 @@
             <div class="gallery-item" data-index="8">
                 <img src="images/gallery/20250906_231133.jpg" alt="Nighttime Event">
             </div>
-            <!-- Row 5 -->
             <div class="gallery-item" data-index="9">
                 <img src="images/gallery/20250710_101531.jpg" alt="Outdoor DJ Sunset">
             </div>
@@ -687,7 +752,7 @@
         function navigate(dir) {
             current = (current + dir + images.length) % images.length;
             lbImg.style.animation = 'none';
-            lbImg.offsetHeight; // reflow
+            lbImg.offsetHeight;
             lbImg.style.animation = '';
             lbImg.src = images[current];
         }
